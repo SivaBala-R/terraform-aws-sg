@@ -11,6 +11,18 @@ resource "aws_security_group" "sg_module" {
         cidr_blocks = ["0.0.0.0/0"]
       }
 
+      dynamic "ingress" {
+        for_each = var.ingress_rules
+        content {
+          from_port = ingress.value.port
+          to_port = ingress.value.port
+          protocol = "tcp"
+          cidr_blocks = ingress.value.cidr_blocks
+        }
+        
+      }
+
+
       tags = merge(
         var.sg_tags,
         local.common_tags
