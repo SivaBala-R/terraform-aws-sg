@@ -28,3 +28,10 @@ resource "aws_security_group" "sg_module" {
         local.common_tags
       )
 }
+
+resource "aws_ssm_parameter" "sg_id" {
+  name        = "${var.project}/${var.environment}/${var.sg_name}_sg_id"
+  description = "security group id"
+  type        = "SecureString" # Options: String, StringList, SecureString
+  value       = aws_security_group.sg_module.id
+}
